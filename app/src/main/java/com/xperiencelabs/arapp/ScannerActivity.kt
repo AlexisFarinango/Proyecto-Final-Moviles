@@ -17,15 +17,8 @@ class ScannerActivity: AppCompatActivity() {
         // Mostrar el escaner en pantalla vertical
         requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-
         // Iniciar el escáner automáticamente
         initScanner()
-
-//        binding = ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//        binding.scannerQRButton.setOnClickListener {
-//            initScanner()
-//        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -56,9 +49,14 @@ class ScannerActivity: AppCompatActivity() {
             val integrator = IntentIntegrator(this)
             integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
             integrator.setPrompt("Escanea un código QR")
-            integrator.setCameraId(0)
+            integrator.setCameraId(0) // Usar la cámara trasera
             integrator.setBeepEnabled(false)
             integrator.setBarcodeImageEnabled(true)
+
+            // Iniciar el escáner en modo vertical
+            integrator.captureActivity = VerticalCaptureActivity::class.java
+
+            // Iniciar el escáner
             integrator.initiateScan()
         } catch (e: Exception) {
             println("Excepcion en el escáner: $e")

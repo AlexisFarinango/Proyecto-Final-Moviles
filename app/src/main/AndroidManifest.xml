@@ -28,6 +28,11 @@
             android:name=".ScannerActivity"
             android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".VerticalCaptureActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            tools:replace="screenOrientation" />
     </application>
 
 </manifest>
