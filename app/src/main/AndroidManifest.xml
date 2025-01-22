@@ -15,8 +15,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="fullSensor"
-            tools:replace="screenOrientation"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +24,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".SecondActivity" />
-        <activity android:name=".ScannerActivity" />
+        <activity
+            android:name=".ScannerActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

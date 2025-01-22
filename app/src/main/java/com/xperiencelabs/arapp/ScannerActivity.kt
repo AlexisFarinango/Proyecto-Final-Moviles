@@ -13,11 +13,19 @@ class ScannerActivity: AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        binding.scannerQRButton.setOnClickListener {
-            initScanner()
-        }
+
+        // Mostrar el escaner en pantalla vertical
+        requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+
+        // Iniciar el escáner automáticamente
+        initScanner()
+
+//        binding = ActivityMainBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+//        binding.scannerQRButton.setOnClickListener {
+//            initScanner()
+//        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -28,10 +36,18 @@ class ScannerActivity: AppCompatActivity() {
         if (result != null && result.contents != null) {
             // Mostrar el resultado en un Toast
             Toast.makeText(this, "El valor escaneado es: ${result.contents}", Toast.LENGTH_LONG).show()
+
+            // Caso de escaneo exitoso ....
+
+            // Regresar a la actividad anterior
+            finish()
         } else {
             // Si no se escaneó ningún código QR, mostrar un mensaje en un Toast
             Toast.makeText(this, "No se escaneó ningún código QR", Toast.LENGTH_LONG).show()
             super.onActivityResult(requestCode, resultCode, data)
+
+            // Regresar a la actividad anterior
+            finish()
         }
     }
 
@@ -47,6 +63,9 @@ class ScannerActivity: AppCompatActivity() {
         } catch (e: Exception) {
             println("Excepcion en el escáner: $e")
             Toast.makeText(this, "Error al iniciar el escáner", Toast.LENGTH_LONG).show()
+
+            // Regresar a la actividad anterior
+            finish()
         }
     }
 }
