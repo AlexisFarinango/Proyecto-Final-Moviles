@@ -1,6 +1,7 @@
 package com.xperiencelabs.arapp
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,32 +18,56 @@ class ScannerActivity: AppCompatActivity() {
         // Mostrar el escaner en pantalla vertical
         requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
+
         // Iniciar el escáner automáticamente
         initScanner()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // Recuperar el resultado del escaneo del código QR en la variable result
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
 
-        // Si el resultado no es nulo y contiene datos
         if (result != null && result.contents != null) {
-            // Mostrar el resultado en un Toast
-            Toast.makeText(this, "El valor escaneado es: ${result.contents}", Toast.LENGTH_LONG).show()
+            val scannedContent = result.contents
 
-            // Caso de escaneo exitoso ....
-
-            // Regresar a la actividad anterior
+            if (scannedContent.startsWith("http") && scannedContent.contains(".pdf")) {
+                // Si contiene ".pdf", intenta abrirlo como PDF
+                showPDF(scannedContent)
+            } else {
+                // Abre el enlace en el navegador como fallback
+                openInBrowser(scannedContent)
+            }
             finish()
         } else {
-            // Si no se escaneó ningún código QR, mostrar un mensaje en un Toast
             Toast.makeText(this, "No se escaneó ningún código QR", Toast.LENGTH_LONG).show()
             super.onActivityResult(requestCode, resultCode, data)
-
-            // Regresar a la actividad anterior
             finish()
         }
     }
+
+    private fun showPDF(pdfUrl: String) {
+        try {
+            // Crear un intento para abrir el PDF usando un visor de PDFs
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setDataAndType(Uri.parse(pdfUrl), "application/pdf")
+            intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "No se pudo abrir el PDF", Toast.LENGTH_LONG).show()
+        }
+    }
+
+
+
+    // Función para abrir un enlace en el navegador
+    private fun openInBrowser(url: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "No se pudo abrir el enlace", Toast.LENGTH_LONG).show()
+        }
+    }
+
 
     private fun initScanner() {
         try {
@@ -66,4 +91,9 @@ class ScannerActivity: AppCompatActivity() {
             finish()
         }
     }
+
 }
+
+
+
+
