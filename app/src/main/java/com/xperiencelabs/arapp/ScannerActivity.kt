@@ -1,23 +1,37 @@
 package com.xperiencelabs.arapp
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.Bundle
+import android.os.ParcelFileDescriptor
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.xperiencelabs.arapp.databinding.ActivityMainBinding
+import com.google.ar.core.HitResult
+import com.google.ar.sceneform.AnchorNode
+import com.google.ar.sceneform.Node
+import com.google.ar.sceneform.rendering.MaterialFactory
+import com.google.ar.sceneform.rendering.ShapeFactory
+import com.google.ar.sceneform.rendering.Texture
+import com.google.ar.sceneform.ux.ArFragment
+import com.google.ar.sceneform.math.Vector3
 import com.google.zxing.integration.android.IntentIntegrator
+import java.io.File
 
-class ScannerActivity: AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class ScannerActivity : AppCompatActivity() {
+
+    private lateinit var arFragment: ArFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_scanner) // Asegúrate de que activity_scanner.xml tenga un fragmento AR
 
-        // Mostrar el escaner en pantalla vertical
+        // Configurar el fragmento de AR
+        arFragment = supportFragmentManager.findFragmentById(R.id.arFragment) as ArFragment
+
+        // Mostrar el escáner en pantalla vertical
         requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
 
         // Iniciar el escáner automáticamente
         initScanner()
@@ -30,44 +44,16 @@ class ScannerActivity: AppCompatActivity() {
             val scannedContent = result.contents
 
             if (scannedContent.startsWith("http") && scannedContent.contains(".pdf")) {
-                // Si contiene ".pdf", intenta abrirlo como PDF
-                showPDF(scannedContent)
+                // Si contiene ".pdf", intenta descargarlo y renderizarlo en AR
+                downloadAndRenderPDF(scannedContent)
             } else {
-                // Abre el enlace en el navegador como fallback
-                openInBrowser(scannedContent)
+                Toast.makeText(this, "El código QR no contiene un PDF válido.", Toast.LENGTH_LONG).show()
             }
-            finish()
         } else {
             Toast.makeText(this, "No se escaneó ningún código QR", Toast.LENGTH_LONG).show()
             super.onActivityResult(requestCode, resultCode, data)
-            finish()
         }
     }
-
-    private fun showPDF(pdfUrl: String) {
-        try {
-            // Crear un intento para abrir el PDF usando un visor de PDFs
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.setDataAndType(Uri.parse(pdfUrl), "application/pdf")
-            intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-            startActivity(intent)
-        } catch (e: Exception) {
-            Toast.makeText(this, "No se pudo abrir el PDF", Toast.LENGTH_LONG).show()
-        }
-    }
-
-
-
-    // Función para abrir un enlace en el navegador
-    private fun openInBrowser(url: String) {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            startActivity(intent)
-        } catch (e: Exception) {
-            Toast.makeText(this, "No se pudo abrir el enlace", Toast.LENGTH_LONG).show()
-        }
-    }
-
 
     private fun initScanner() {
         try {
@@ -84,16 +70,60 @@ class ScannerActivity: AppCompatActivity() {
             // Iniciar el escáner
             integrator.initiateScan()
         } catch (e: Exception) {
-            println("Excepcion en el escáner: $e")
+            println("Excepción en el escáner: $e")
             Toast.makeText(this, "Error al iniciar el escáner", Toast.LENGTH_LONG).show()
-
-            // Regresar a la actividad anterior
-            finish()
         }
     }
 
+    private fun downloadAndRenderPDF(pdfUrl: String) {
+        // Aquí puedes implementar la lógica para descargar el PDF. Para este ejemplo,
+        // asumimos que el PDF ya está descargado y se encuentra en el almacenamiento local.
+        val localPdfPath = "/path/to/downloaded/pdf" // Cambia esto según tu lógica
+
+        try {
+            val bitmap = renderPdfToBitmap(localPdfPath)
+
+            // Configurar el listener para tocar un plano AR
+            arFragment.setOnTapArPlaneListener { hitResult, _, _ ->
+                create3DObjectWithPDF(hitResult, bitmap)
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error al procesar el PDF", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun renderPdfToBitmap(pdfPath: String): Bitmap {
+        val fileDescriptor = ParcelFileDescriptor.open(File(pdfPath), ParcelFileDescriptor.MODE_READ_ONLY)
+        val renderer = PdfRenderer(fileDescriptor)
+        val page = renderer.openPage(0) // Renderiza la primera página del PDF
+        val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+        page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+        page.close()
+        renderer.close()
+        return bitmap
+    }
+
+    private fun create3DObjectWithPDF(hitResult: HitResult, bitmap: Bitmap) {
+        // Usa Sceneform para crear un objeto plano y renderizar el PDF como textura
+        Texture.builder().setSource(bitmap).build().thenAccept { texture ->
+            MaterialFactory.makeTransparentWithTexture(this, texture)
+                .thenAccept { material ->
+                    val renderable = ShapeFactory.makePlane(
+                        Vector3(1.0f, 1.0f, 1.0f), // Dimensiones del plano
+                        Vector3.zero(),            // Posición inicial
+                        material
+                    )
+
+                    // Colocar el objeto en el plano detectado
+                    val anchor = hitResult.createAnchor()
+                    val anchorNode = AnchorNode(anchor)
+                    anchorNode.setParent(arFragment.arSceneView.scene)
+
+                    val node = Node()
+                    node.setParent(anchorNode)
+                    node.renderable = renderable
+                }
+        }
+    }
 }
-
-
-
 
