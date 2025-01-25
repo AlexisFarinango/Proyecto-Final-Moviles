@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
         val scannerButton: MaterialButton = findViewById(R.id.scannerQRButton)
         scannerButton.setOnClickListener {
             // Iniciar la ScannerActivity
-            val intent = Intent(this, ScannerActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(this, ScannerActivity::class.java)
+//            startActivity(intent)
         }
     }
 }
