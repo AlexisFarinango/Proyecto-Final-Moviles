@@ -14,9 +14,9 @@ dependencyResolutionManagement {
     }
 }
 
-dependencies {
-    implementation 'com.github.jitpack:android-example:1.0.1'
-}
+//dependencies {
+//    implementation 'com.github.jitpack:android-example:1.0.1'
+//}
 
 rootProject.name = "ARApp"
 include ':app'
