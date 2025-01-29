@@ -148,25 +148,30 @@ class MainActivity : AppCompatActivity() {
 
         // Cargar el nuevo modelo
         val modelPath = when (modelName) {
-            "carro" -> "models/carro.glb"
-            "avion" -> "models/avion.glb"
-            "tanque" -> "models/tanque.glb"
-            "edificio2" -> "models/plano2.glb"
-            "edificio" -> "models/sofa.glb"
-            else -> return
+            "facultadCienciasAdministrativas" -> "models/carro.glb"
+            "facultadEsfot" -> "models/avion.glb"
+            "facultadPetroleos" -> "models/tanque.glb"
+            "facultadQuimica" -> "models/plano2.glb"
+            "facultadSistemas" -> "models/sofa.glb"
+            else -> {
+                // Mostrar mensaje de error si el QR no es válido
+                Toast.makeText(this, "❌ Modelo no encontrado para: $modelName", Toast.LENGTH_SHORT).show()
+                return // Salir de la función sin cargar ningún modelo
+            }
         }
 
         // Crea el modelo y lo agrega a la escena
         val newModelNode = createModel(modelPath, 1f, Position(0f, 0f, -1f))
         sceneView.addChild(newModelNode)
         currentModelNode = newModelNode
+        Toast.makeText(this, "✅ Modelo encontrado: $modelName", Toast.LENGTH_SHORT).show()
     }
 
     // Función auxiliar para crear y configurar modelos 3D
     private fun createModel(path: String, scale: Float, position: Position): ArModelNode {
         return ArModelNode(sceneView.engine, PlacementMode.INSTANT).apply {
             loadModelGlbAsync(glbFileLocation = path, scaleToUnits = scale, centerOrigin = position) {
-                isVisible = true // Los modelos son visibles inmediatamente después de cargarse
+                isVisible = true // Los modelos son visibles después de cargarse
                 this.rotation = Position(0f, 0f, 0f)
             }
         }
