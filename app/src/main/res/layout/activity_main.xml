@@ -1,99 +1,27 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:background="@android:color/white"
     tools:context=".MainActivity">
 
-    <!-- Contenedor para el círculo y el logo -->
-
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/logo_circular"
-        android:layout_marginBottom="20dp"/>
-
-    <!-- Título con el birrete -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Pantalla 1"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <!-- Texto Lorem ipsum -->
-    <TextView
-        android:id="@+id/infoText"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis tincidunt id magna et placerat tincidunt est."
-        android:textAlignment="center"
-        android:layout_marginBottom="30dp"/>
-
-    <!-- Botón de navegación -->
-
-    <!-- Indicadores de página -->
-
-    <LinearLayout
+    <io.github.sceneview.ar.ArSceneView
+        android:id="@+id/sceneView"
         android:layout_width="match_parent"
-        android:layout_height="53dp"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/navigateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ir a la Vista AR" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/scannerQRButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Escanear QR" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
+        android:layout_height="match_parent"/>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/place"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp">
-        
-        <View
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:background="@drawable/dot_selected"
-            android:layout_margin="4dp"/>
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:text="Escanear"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.863" />
 
-        <View
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:background="@drawable/dot_unselected"
-            android:layout_margin="4dp"/>
 
-        <View
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:background="@drawable/dot_unselected"
-            android:layout_margin="4dp"/>
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
