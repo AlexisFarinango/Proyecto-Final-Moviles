@@ -148,11 +148,11 @@ class MainActivity : AppCompatActivity() {
 
         // Cargar el nuevo modelo
         val modelPath = when (modelName) {
-            "facultadCienciasAdministrativas" -> "models/carro.glb"
-            "facultadEsfot" -> "models/avion.glb"
-            "facultadPetroleos" -> "models/tanque.glb"
-            "facultadQuimica" -> "models/plano2.glb"
-            "facultadSistemas" -> "models/sofa.glb"
+            "facultadCienciasAdministrativas" -> "models/ciencias_administrativas.glb"
+            "facultadEsfot" -> "models/esfot.glb"
+            "facultadPetroleos" -> "models/petroleos.glb"
+            "facultadQuimica" -> "models/quimica.glb"
+            "facultadSistemas" -> "models/sistemas.glb"
             else -> {
                 // Mostrar mensaje de error si el QR no es válido
                 Toast.makeText(this, "❌ Modelo no encontrado para: $modelName", Toast.LENGTH_SHORT).show()
