@@ -120,11 +120,16 @@ class MainActivity : AppCompatActivity() {
 
         // Encuentra el botón por su ID
         val button = findViewById<ExtendedFloatingActionButton>(R.id.place)
-
+        val buttonFacultades = findViewById<ExtendedFloatingActionButton>(R.id.facultades)
         // Configura el OnClickListener para el botón
         button.setOnClickListener {
             // Crea un Intent para iniciar SecondActivity
             val intent = Intent(this, SecondActivity::class.java)
+            startActivity(intent)
+        }
+        buttonFacultades.setOnClickListener {
+            // Crea un Intent para iniciar ThirdActivity
+            val intent = Intent(this, ThirdActivity::class.java)
             startActivity(intent)
         }
     }
