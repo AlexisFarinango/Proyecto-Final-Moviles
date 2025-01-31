@@ -1,12 +1,12 @@
 # Realidad Aumentada con Scanner QR
 
-Silvia Chaluisa 
-Dilan Bedoya 
-Alex Cardenas 
-Steven Castillo 
-Alexis Farinango 
-Lenin Gomez 
-Kevin Cola 
+Silvia Chaluisa,
+Dilan Bedoya, 
+Alex Cardenas, 
+Steven Castillo, 
+Alexis Farinango, 
+Lenin Gomez,
+Kevin Cola y
 Marcelo Pinzon 
 
 
