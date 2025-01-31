@@ -1,4 +1,4 @@
-# Realidad Aumentada con Scanner QR
+![image](https://github.com/user-attachments/assets/d06a298f-825c-42bf-9cf9-6836ef356e17)# Realidad Aumentada con Scanner QR
 
 DESARROLLO 
 
@@ -100,6 +100,20 @@ Si pulsamos en cada una de estas facultades nos redirigirá a su debida página 
 Si regresamos a la página principal y pulsamos el botón empezar, nos llevara a una pantalla donde podremos escanear un código Qr con el boton “escanear”.
 
 ![WhatsApp Image 2025-01-31 at 3 41 05 AM](https://github.com/user-attachments/assets/d2c36234-765d-45c1-b8d0-457a154fcdff)
+
+
+Aqui tenemos los siguientes Qr que cargamos como modelos para nuestra App. 
+
+![WhatsApp Image 2025-01-31 at 7 33 02 AM](https://github.com/user-attachments/assets/0756ea0d-6de5-4b2e-9684-3df04513455b)
+
+Al escanear nos dará una viste en 3D con la informacion de dicha facultad. 
+
+![WhatsApp Image 2025-01-31 at 7 36 01 AM (1)](https://github.com/user-attachments/assets/ae598473-091d-4878-bef6-2d8a5f6c6196)
+
+
+
+
+
 
 
 
