@@ -1,4 +1,14 @@
-![image](https://github.com/user-attachments/assets/d06a298f-825c-42bf-9cf9-6836ef356e17)# Realidad Aumentada con Scanner QR
+# Realidad Aumentada con Scanner QR
+
+Silvia Chaluisa 
+Dilan Bedoya 
+Alex Cardenas 
+Steven Castillo 
+Alexis Farinango 
+Lenin Gomez 
+Kevin Cola 
+Marcelo Pinzon 
+
 
 DESARROLLO 
 
